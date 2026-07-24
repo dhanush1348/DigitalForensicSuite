@@ -1,0 +1,36 @@
+# Datasets (too large for git — see docs/TECH_STACK.md for download sources)
+datasets/**/*
+!datasets/**/.gitkeep
+!datasets/**/
+
+# Model weights (large binaries — use Git LFS or cloud storage instead)
+models/**/*.pt
+models/**/*.pth
+models/**/*.h5
+models/**/*.onnx
+
+# Runtime artifacts
+uploads/*
+!uploads/.gitkeep
+reports/*.pdf
+!reports/.gitkeep
+
+# Python
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# Env / secrets
+.env
+*.env.local
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/

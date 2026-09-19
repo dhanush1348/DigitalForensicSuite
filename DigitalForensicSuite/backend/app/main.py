@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routers import image, video, signature, report
 
 app = FastAPI(
-    title="Digital Forensic Suite API",
+    title="SecureVision-XAI API",
     description="Image, video, and signature forgery detection engine.",
     version="0.1.0",
 )

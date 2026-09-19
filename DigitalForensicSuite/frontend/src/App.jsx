@@ -12,6 +12,11 @@ import {
   BarChart2,
 } from 'lucide-react';
 
+// Real pages
+import ImagePage     from './pages/ImagePage.jsx';
+import SignaturePage from './pages/SignaturePage.jsx';
+import AboutPage     from './pages/AboutPage.jsx';
+
 /* ── Page labels ──────────────────────────────────────────── */
 const PAGES = ['home', 'image', 'video', 'signature', 'history', 'about'];
 
@@ -29,7 +34,7 @@ function Navbar({ page, setPage }) {
       <div className="container nav-inner">
         <button className="nav-logo" onClick={() => setPage('home')}
           style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-          ⬡ Digital Forensic Suite
+          ⬡ SecureVision-XAI
         </button>
         <ul className="nav-links">
           {links.map(l => (
@@ -56,24 +61,30 @@ function HomePage({ setPage }) {
     {
       id: 'image', icon: <ImageIcon size={28} />, color: 'var(--clr-primary)',
       title: 'Image Forgery',
-      desc: 'ELA + CNN detection with Grad-CAM heatmap overlays for pixel-level explainability.',
+      desc: 'EfficientNet-B0 + ELA pipeline with Grad-CAM heatmap overlays. Trained on CASIA v2.0.',
+      badge: 'Phase 1 ✓',
+      badgeClass: 'badge-success',
     },
     {
       id: 'video', icon: <Video size={28} />, color: 'var(--clr-accent-violet)',
       title: 'Deepfake Video',
       desc: 'CNN + Bi-LSTM frame analysis with suspicious-frame timeline and per-frame confidence.',
+      badge: 'Phase 2',
+      badgeClass: 'badge-warning',
     },
     {
       id: 'signature', icon: <PenLine size={28} />, color: 'var(--clr-accent-cyan)',
       title: 'Signature Verification',
-      desc: 'Siamese EfficientNetB3 network computing similarity scores with FAR/FRR metrics.',
+      desc: 'Siamese ResNet18 with contrastive loss + Grad-CAM. Trained on CEDAR dataset.',
+      badge: 'Phase 1 ✓',
+      badgeClass: 'badge-success',
     },
   ];
 
   const features = [
-    { icon: <Zap size={20} />, title: 'Fast Inference', desc: 'Optimised pipelines return results in seconds.' },
-    { icon: <Lock size={20} />, title: 'Explainable AI', desc: 'Grad-CAM heatmaps show which pixels drove the verdict.' },
-    { icon: <BarChart2 size={20} />, title: 'PDF Reports', desc: 'Download court-ready forensic reports with one click.' },
+    { icon: <Zap size={20} />,      title: 'Fast Inference',   desc: 'Optimised pipelines return results in seconds.' },
+    { icon: <Lock size={20} />,     title: 'Explainable AI',   desc: 'Grad-CAM heatmaps show which pixels drove the verdict.' },
+    { icon: <BarChart2 size={20} />, title: 'PDF Reports',      desc: 'Download court-ready forensic reports with one click.' },
   ];
 
   return (
@@ -95,16 +106,15 @@ function HomePage({ setPage }) {
             <span className="text-gradient">Prove.</span>
           </h1>
           <p style={{ maxWidth: '600px', margin: '0 auto 40px', fontSize: '1.15rem', lineHeight: 1.7 }}>
-            A multi-modal deep learning system for detecting image manipulation,
-            deepfake video, and signature forgery — with explainable AI and
-            downloadable forensic reports.
+            A multi-modal deep learning system for detecting image manipulation
+            and signature forgery — with explainable AI and downloadable forensic reports.
           </p>
           <div className="flex justify-center gap-4">
             <button id="hero-start-btn" className="btn btn-primary" onClick={() => setPage('image')}>
-              Get Started <ChevronRight size={16} />
+              Try Image Detection <ChevronRight size={16} />
             </button>
-            <button id="hero-about-btn" className="btn btn-secondary" onClick={() => setPage('about')}>
-              Learn More
+            <button id="hero-sig-btn" className="btn btn-secondary" onClick={() => setPage('signature')}>
+              Try Signature Verify
             </button>
           </div>
         </div>
@@ -113,7 +123,7 @@ function HomePage({ setPage }) {
       {/* Engine Cards */}
       <section style={{ padding: '64px 0' }}>
         <div className="container">
-          <h2 style={{ textAlign: 'center', marginBottom: '48px' }}>Three Detection Engines</h2>
+          <h2 style={{ textAlign: 'center', marginBottom: '48px' }}>Detection Engines</h2>
           <div className="grid-3">
             {engines.map(e => (
               <div key={e.id} className="card" style={{ cursor: 'pointer' }}
@@ -126,7 +136,12 @@ function HomePage({ setPage }) {
                 }}>
                   {e.icon}
                 </div>
-                <h4 style={{ marginBottom: 'var(--space-2)' }}>{e.title}</h4>
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <h4 style={{ margin: 0 }}>{e.title}</h4>
+                  <span className={`badge ${e.badgeClass}`} style={{ fontSize: '0.65rem', marginLeft: 8, flexShrink: 0 }}>
+                    {e.badge}
+                  </span>
+                </div>
                 <p className="text-sm">{e.desc}</p>
                 <div className="flex items-center gap-2 mt-4" style={{ color: e.color }}>
                   <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Open Engine</span>
@@ -168,7 +183,7 @@ function HomePage({ setPage }) {
 }
 
 /* ── Placeholder Page ─────────────────────────────────────── */
-function PlaceholderPage({ title, icon, color }) {
+function PlaceholderPage({ title, icon, color, phase = '2' }) {
   return (
     <div className="fade-in" style={{ padding: '80px 0', textAlign: 'center' }}>
       <div className="container">
@@ -182,11 +197,11 @@ function PlaceholderPage({ title, icon, color }) {
         </div>
         <h2 style={{ marginBottom: 12 }}>{title}</h2>
         <p style={{ maxWidth: 480, margin: '0 auto' }}>
-          This page is under active development (Week 1 scaffolding). The backend
-          service and model will be wired up here once training is complete.
+          This module is scheduled for Phase {phase}. The backend service
+          and model will be wired here once Phase 1 training is complete.
         </p>
         <div className="badge badge-warning mt-6" style={{ margin: '24px auto 0' }}>
-          🚧 Coming in Week 2–3
+          🚧 Coming in Phase {phase}
         </div>
       </div>
     </div>
@@ -200,11 +215,11 @@ export default function App() {
   function renderPage() {
     switch (page) {
       case 'home':      return <HomePage setPage={setPage} />;
-      case 'image':     return <PlaceholderPage title="Image Forensics"        icon={<ImageIcon />} color="var(--clr-primary)" />;
-      case 'video':     return <PlaceholderPage title="Video Deepfake Analysis" icon={<Video />}    color="var(--clr-accent-violet)" />;
-      case 'signature': return <PlaceholderPage title="Signature Verification"  icon={<PenLine />}  color="var(--clr-accent-cyan)" />;
-      case 'history':   return <PlaceholderPage title="Analysis History"        icon={<History />}  color="var(--clr-accent-emerald)" />;
-      case 'about':     return <PlaceholderPage title="About the Project"       icon={<FileText />} color="var(--clr-accent-amber)" />;
+      case 'image':     return <ImagePage />;
+      case 'signature': return <SignaturePage />;
+      case 'video':     return <PlaceholderPage title="Video Deepfake Analysis" icon={<Video />}   color="var(--clr-accent-violet)" phase="2" />;
+      case 'history':   return <PlaceholderPage title="Analysis History"        icon={<History />} color="var(--clr-accent-emerald)" phase="2" />;
+      case 'about':     return <AboutPage />;
       default:          return <HomePage setPage={setPage} />;
     }
   }
@@ -221,7 +236,7 @@ export default function App() {
         textAlign: 'center',
       }}>
         <p className="text-sm text-muted">
-          Digital Forensic Suite · 4-person team · 6-week sprint · Week 1 ✅
+          SecureVision-XAI · 4-person team · 6-week sprint · Phase 1 🚀
         </p>
       </footer>
     </div>

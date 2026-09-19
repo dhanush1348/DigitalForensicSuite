@@ -1,5 +1,5 @@
 /**
- * Axios API client — pre-configured for the Digital Forensic Suite backend.
+ * Axios API client — pre-configured for the SecureVision-XAI backend.
  * All three engine endpoints (/image, /video, /signature) and the report
  * endpoint (/report, /history) use this single instance.
  *

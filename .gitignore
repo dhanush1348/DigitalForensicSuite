@@ -1,0 +1,32 @@
+﻿# Local workspace / editor files
+.vscode/
+.vscode/*.json
+
+# Large local environment folders
+**/.venv/
+**/.venv-*/
+**/node_modules/
+**/dist/
+**/__pycache__/
+**/.pytest_cache/
+**/*.pyc
+**/.mypy_cache/
+
+# Large datasets and models
+DigitalForensicSuite/datasets/**
+!DigitalForensicSuite/datasets/**/.gitkeep
+DigitalForensicSuite/models/**/*.pth
+DigitalForensicSuite/models/**/*.pt
+DigitalForensicSuite/models/**/*.h5
+DigitalForensicSuite/models/**/*.onnx
+
+# Local runtime artifacts
+DigitalForensicSuite/uploads/*
+!DigitalForensicSuite/uploads/.gitkeep
+DigitalForensicSuite/reports/*.pdf
+!DigitalForensicSuite/reports/.gitkeep
+
+# Env files
+.env
+*.env
+*.env.local

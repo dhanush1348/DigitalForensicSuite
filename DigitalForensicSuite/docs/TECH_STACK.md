@@ -6,9 +6,8 @@ Each row: what it's for, where in the repo it's used, why it was picked, and wha
 
 | Tech | Used in | How | Alternatives |
 |---|---|---|---|
-| **React** | `frontend/src/` | Pages for Home, Image/Video/Signature detection, History, About; component state for upload previews, prediction results, heatmap overlays | **Streamlit** — much faster to build with (pure Python, no separate frontend team needed), but less polished/customizable UI and harder to make it look like a "real product" for a final demo. **Vue** — similar tradeoffs to React, smaller learning curve, less ecosystem support |
-| **Axios / fetch** | `frontend/src/api/` | Calls the FastAPI endpoints (`/image`, `/video`, `/signature`, `/report`) | Native `fetch` (no extra dependency) works fine at this scale — Axios mainly helps if you want interceptors for auth later |
-| **Chart/timeline lib** (e.g. `recharts`) | Video Detection page | Rendering the suspicious-frame timeline | Plain `<canvas>` or SVG if you want to avoid the dependency |
+| **React** | `frontend/src/` | Pages for Home, Image/Signature detection, History, About; component state for upload previews, prediction results, heatmap overlays | **Streamlit** — much faster to build with (pure Python, no separate frontend team needed), but less polished/customizable UI and harder to make it look like a "real product" for a final demo. **Vue** — similar tradeoffs to React, smaller learning curve, less ecosystem support |
+| **Axios / fetch** | `frontend/src/api/` | Calls the FastAPI image, signature, and report endpoints | Native `fetch` (no extra dependency) works fine at this scale — Axios mainly helps if you want interceptors for auth later |
 
 ## Backend
 
@@ -22,11 +21,10 @@ Each row: what it's for, where in the repo it's used, why it was picked, and wha
 
 | Tech | Used in | How | Alternatives |
 |---|---|---|---|
-| **PyTorch** | `models/`, `training/`, `inference/` | All three model architectures (image CNN, video CNN+Bi-LSTM, Siamese network) | **TensorFlow/Keras** — equally valid, Keras is arguably faster to prototype a Sequential CNN in. Pick based on what most of your 4 teammates already know — don't split the team across both |
+| **PyTorch** | `models/`, `training/`, `inference/` | Image CNN and Siamese network architectures | **TensorFlow/Keras** — equally valid, Keras is arguably faster to prototype a Sequential CNN in. Pick based on what most of your 4 teammates already know — don't split the team across both |
 | **timm** | Signature Siamese branches, optionally image CNN backbone | Pretrained EfficientNetB3 for feature extraction (transfer learning beats training from scratch given your dataset sizes and 6-week deadline) | Train a smaller custom CNN from scratch if compute is limited — MobileNetV2 (also mentioned in your original plan) is a lighter pretrained alternative to EfficientNetB3 |
 | **OpenCV** | `preprocessing/*.py` | ELA generation (JPEG resave + diff), Otsu thresholding for signatures, general resize/color-space conversion | Pillow can handle basic resize/JPEG resave if you want one less dependency, but OpenCV's thresholding/morphology functions are genuinely better for the signature pipeline |
-| **face-recognition / mediapipe** | `preprocessing/video_preprocessing.py` | Face detection + alignment before feeding frames to the video CNN | `face-recognition` (dlib-based) is more accurate but slower to install (dlib compilation issues are common — budget time for this or use mediapipe, which is pip-installable with no compiler needed) |
-| **grad-cam (pytorch-grad-cam)** | Image + video services, for explainability (Phase 7) | Generates the heatmap overlay showing which pixels drove the "forged" prediction | Implement Grad-CAM manually (a few lines of hook code) if you want zero extra dependencies — the library just saves time |
+| **grad-cam (pytorch-grad-cam)** | Image service, for explainability (Phase 7) | Generates the heatmap overlay showing which pixels drove the "forged" prediction | Implement Grad-CAM manually (a few lines of hook code) if you want zero extra dependencies — the library just saves time |
 
 ## Reporting
 
@@ -39,7 +37,6 @@ Each row: what it's for, where in the repo it's used, why it was picked, and wha
 | Dataset | Used for | Notes |
 |---|---|---|
 | CASIA v2 | Image splicing/copy-move | Public, direct download, no access request needed |
-| FaceForensics++ / DFDC / CelebDF | Deepfake video | **Require signed access agreements** — request access on Day 1, this is your biggest schedule risk |
 | CEDAR / BHSig260 / GPDS960 | Signature verification | Public, direct download |
 
 ## Deployment (Phase 10 — only relevant once the demo is ready)

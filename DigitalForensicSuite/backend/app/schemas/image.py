@@ -40,6 +40,10 @@ class ImageForensicsResponse(BaseModel):
     processing_time_ms: float = Field(
         description="End-to-end inference latency in milliseconds."
     )
+    model_version: str = Field(
+        default="v4-metrics",
+        description="Identifier for the deployed image forgery checkpoint.",
+    )
 
     model_config = {"json_schema_extra": {
         "example": {

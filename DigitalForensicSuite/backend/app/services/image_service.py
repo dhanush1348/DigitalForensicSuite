@@ -82,4 +82,5 @@ async def predict(file: UploadFile) -> dict:
     finally:
         image_path.unlink(missing_ok=True)
 
+    result["model_version"] = settings.image_model_version
     return result

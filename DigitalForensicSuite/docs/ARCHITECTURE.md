@@ -8,27 +8,27 @@
                               └───────┬───────┘
                                       │ upload / view results
                               ┌───────▼───────┐
-                              │  React Frontend│  (Home, Image, Video,
+                              │  React Frontend│  (Home, Image,
                               │                │   Signature, History, About)
                               └───────┬───────┘
                                       │ REST (JSON + multipart)
                               ┌───────▼───────┐
                               │ FastAPI Backend│
-                              │  /image /video │
+                              │  /image        │
                               │ /signature     │
                               │ /report /history│
                               └───┬───┬───┬────┘
                     ┌─────────────┘   │   └─────────────┐
                     ▼                 ▼                 ▼
             ┌───────────────┐ ┌───────────────┐ ┌───────────────┐
-            │ Image Engine  │ │ Video Engine  │ │Signature Engine│
-            │ ELA + CNN     │ │ CNN + Bi-LSTM │ │ Siamese Network│
-            │ + Grad-CAM    │ │ + Grad-CAM    │ │ (EfficientNetB3)│
+            │ Image Engine  │ │Signature Engine│
+            │ ELA + CNN     │ │ Siamese Network│
+            │ + Grad-CAM    │ │ (EfficientNetB3)│
             └───────┬───────┘ └───────┬───────┘ └───────┬───────┘
-                    │ heatmap +        │ frame heatmaps +│ similarity
-                    │ verdict          │ timeline         │ score
-                    └─────────────┬────┴─────────┬────────┘
-                                  ▼               ▼
+                    │ heatmap +        │ similarity
+                    │ verdict          │ score
+                    └─────────────┬────┴──────────────┘
+                                  ▼
                             ┌───────────────────────┐
                             │   Report Generator     │
                             │ (reportlab + Jinja2)   │
@@ -52,7 +52,7 @@
 8. Frontend renders the verdict, confidence bar, and heatmap overlay.
 9. On "Download Report," backend renders a PDF via `reportlab`/Jinja2 template and returns it from `/report/{case_id}`.
 
-Video and signature flows mirror this, swapping the model and preprocessing step (frame extraction + face alignment for video; grayscale/Otsu/binarize for signatures) and the output shape (timeline vs. similarity score).
+The signature flow mirrors this with grayscale/Otsu preprocessing and a similarity-score response.
 
 ## Why this separation (routers → services → models)
 - **Routers** only handle HTTP concerns (validation, status codes) — keeps them thin and testable with `httpx`.

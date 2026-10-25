@@ -2,7 +2,6 @@ import { useState } from 'react';
 import {
   Shield,
   ImageIcon,
-  Video,
   PenLine,
   History,
   FileText,
@@ -18,13 +17,12 @@ import SignaturePage from './pages/SignaturePage.jsx';
 import AboutPage     from './pages/AboutPage.jsx';
 
 /* ── Page labels ──────────────────────────────────────────── */
-const PAGES = ['home', 'image', 'video', 'signature', 'history', 'about'];
+const PAGES = ['home', 'image', 'signature', 'history', 'about'];
 
 /* ── Navigation ──────────────────────────────────────────── */
 function Navbar({ page, setPage }) {
   const links = [
     { id: 'image',     label: 'Image',     icon: <ImageIcon size={15} /> },
-    { id: 'video',     label: 'Video',     icon: <Video     size={15} /> },
     { id: 'signature', label: 'Signature', icon: <PenLine   size={15} /> },
     { id: 'history',   label: 'History',   icon: <History   size={15} /> },
     { id: 'about',     label: 'About',     icon: <FileText  size={15} /> },
@@ -64,13 +62,6 @@ function HomePage({ setPage }) {
       desc: 'EfficientNet-B0 + ELA pipeline with Grad-CAM heatmap overlays. Trained on CASIA v2.0.',
       badge: 'Phase 1 ✓',
       badgeClass: 'badge-success',
-    },
-    {
-      id: 'video', icon: <Video size={28} />, color: 'var(--clr-accent-violet)',
-      title: 'Deepfake Video',
-      desc: 'CNN + Bi-LSTM frame analysis with suspicious-frame timeline and per-frame confidence.',
-      badge: 'Phase 2',
-      badgeClass: 'badge-warning',
     },
     {
       id: 'signature', icon: <PenLine size={28} />, color: 'var(--clr-accent-cyan)',
@@ -217,7 +208,6 @@ export default function App() {
       case 'home':      return <HomePage setPage={setPage} />;
       case 'image':     return <ImagePage />;
       case 'signature': return <SignaturePage />;
-      case 'video':     return <PlaceholderPage title="Video Deepfake Analysis" icon={<Video />}   color="var(--clr-accent-violet)" phase="2" />;
       case 'history':   return <PlaceholderPage title="Analysis History"        icon={<History />} color="var(--clr-accent-emerald)" phase="2" />;
       case 'about':     return <AboutPage />;
       default:          return <HomePage setPage={setPage} />;

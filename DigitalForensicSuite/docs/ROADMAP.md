@@ -20,7 +20,6 @@ The system must distinguish model attribution from forensic evidence. A Grad-CAM
 | Image masks | Not present locally |
 | Forgery-type labels | Not available in the current manifest |
 | Signature verifier | Siamese ResNet18 prototype; secondary project module |
-| Video analysis | Not implemented |
 | Reports/history | Placeholder routes only |
 | Automated tests | 31 tests passed at the last verification |
 
@@ -79,7 +78,7 @@ image_path,type,mask_path,source,group_id,split
 - Extend the image API response with type, mask, evidence, and explanation fields.
 - Update the React image page to show original image, predicted mask, Grad-CAM, evidence, and limitations.
 - Implement reports only after the response contract is stable.
-- Keep video, history, and signature functionality labelled as prototype or future work until implemented and tested.
+- Keep history and signature functionality labelled as prototype or future work until implemented and tested.
 
 ### Stage 7 - Final validation and presentation
 

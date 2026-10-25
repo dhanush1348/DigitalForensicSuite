@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import image, video, signature, report
+from app.routers import image, signature, report
 
 app = FastAPI(
     title="SecureVision-XAI API",
-    description="Image, video, and signature forgery detection engine.",
+    description="Image and signature forgery detection engine.",
     version="0.1.0",
 )
 
@@ -18,7 +18,6 @@ app.add_middleware(
 )
 
 app.include_router(image.router, prefix="/image", tags=["Image Forensics"])
-app.include_router(video.router, prefix="/video", tags=["Video Forensics"])
 app.include_router(signature.router, prefix="/signature", tags=["Signature Verification"])
 app.include_router(report.router, tags=["Reports & History"])
 

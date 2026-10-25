@@ -1,7 +1,6 @@
 /**
  * Axios API client — pre-configured for the SecureVision-XAI backend.
- * All three engine endpoints (/image, /video, /signature) and the report
- * endpoint (/report, /history) use this single instance.
+ * The image and signature endpoints and the report endpoints use this instance.
  *
  * Usage:
  *   import api from './client';
@@ -14,7 +13,7 @@ const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 120000, // 120 s — large video uploads / long inference can take time
+  timeout: 120000,
   headers: {
     'Accept': 'application/json',
   },
@@ -64,20 +63,6 @@ export async function analyzeImage(file) {
 }
 
 /**
- * Upload a video file for deepfake analysis.
- * @param {File} file
- * @returns {Promise<{prediction, confidence, suspicious_frames, timeline}>}
- */
-export async function analyzeVideo(file) {
-  const form = new FormData();
-  form.append('file', file);
-  const { data } = await api.post('/video/', form, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
-  return data;
-}
-
-/**
  * Upload two signature images for forgery verification.
  * @param {File} reference  — known authentic signature
  * @param {File} query      — signature to verify
@@ -109,6 +94,13 @@ export async function fetchHistory() {
  */
 export async function downloadReport(caseId) {
   const { data } = await api.get(`/report/${caseId}`, {
+    responseType: 'blob',
+  });
+  return URL.createObjectURL(data);
+}
+
+export async function downloadImageEvaluationReport(artifact = 'markdown') {
+  const { data } = await api.get(`/report/image/evaluation/${artifact}`, {
     responseType: 'blob',
   });
   return URL.createObjectURL(data);

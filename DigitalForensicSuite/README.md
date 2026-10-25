@@ -80,7 +80,7 @@ The final explanation must be traceable to measured outputs. For example:
 - No ground-truth mask directory or manipulation-type manifest is currently present locally.
 - The existing image checkpoint was trained on a very small split and is not evidence of production accuracy.
 - The signature verifier is a secondary prototype; its current checkpoint requires retraining and threshold calibration.
-- Video analysis, history, and report routes are not complete implementations.
+- History and report routes are not complete implementations.
 - The full staged plan is in [docs/ROADMAP.md](docs/ROADMAP.md).
 
 Training Stage 1 on the current subset is useful only as a smoke test. Full localization and evidence training must wait for a permitted dataset with masks and labels.
@@ -136,6 +136,25 @@ python training/train_image.py --data-dir datasets/images/CASIA2 --cpu-debug --e
 ```
 
 This uses a tiny local subset and is only a pipeline check. It must not be reported as the final model evaluation.
+
+### 5. Train and evaluate the image forgery model
+
+```bash
+python training/train_image.py \
+        --data-dir datasets/images/CASIA2 \
+        --epochs 25 --batch-size 32 \
+        --output models/image_forgery/best_efficientnet_casia_full.pth \
+        --report-dir reports/image_evaluation
+```
+
+The best validation epoch writes:
+
+- `reports/image_evaluation/image_evaluation_report.md` with accuracy, ROC-AUC, precision, recall, and F1.
+- `reports/image_evaluation/image_evaluation_report.json` with machine-readable metrics.
+- `reports/image_evaluation/confusion_matrix.png` with rows as true labels and columns as predicted labels.
+
+The report is also downloadable from the Image Detection page after training, or from:
+`GET /report/image/evaluation/markdown`, `GET /report/image/evaluation/metrics`, and `GET /report/image/evaluation/confusion-matrix`.
 
 ### 5. Build the current local manifest
 

@@ -21,7 +21,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     # Model checkpoints (relative to project root)
     signature_model_path: str = "../models/signature/best_siamese.pth"
-    image_model_path: str = "../models/image_forgery/best_efficientnet_casia_full_gpu.pth"
+    image_model_path: str = "../models/image_forgery/image_forgery_v4_metrics.pth"
+    image_report_dir: str = "../reports/image_evaluation_v4_metrics"
+    image_model_version: str = "v4-metrics"
 
     # Upload directory
     upload_dir: str = "../uploads"

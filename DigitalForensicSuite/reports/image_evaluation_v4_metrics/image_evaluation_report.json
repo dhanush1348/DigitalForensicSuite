@@ -1,0 +1,45 @@
+{
+  "class_names": [
+    "AUTHENTIC",
+    "FORGED"
+  ],
+  "sample_count": 2523,
+  "threshold": 0.5,
+  "confusion_matrix": [
+    [
+      1432,
+      66
+    ],
+    [
+      44,
+      981
+    ]
+  ],
+  "accuracy": 0.9564,
+  "balanced_accuracy": 0.9565,
+  "roc_auc": 0.9924,
+  "pr_auc": 0.9884,
+  "specificity": 0.9559,
+  "false_positive_rate": 0.0441,
+  "mcc": 0.9101,
+  "threshold_diagnostic": {
+    "best_forged_f1_threshold": 0.5,
+    "best_forged_f1": 0.9469,
+    "note": "Diagnostic only; select thresholds on a calibration split, not the final test set."
+  },
+  "per_class": {
+    "AUTHENTIC": {
+      "precision": 0.9702,
+      "recall": 0.9559,
+      "f1": 0.963,
+      "support": 1498
+    },
+    "FORGED": {
+      "precision": 0.937,
+      "recall": 0.9571,
+      "f1": 0.9469,
+      "support": 1025
+    }
+  },
+  "classification_report": "              precision    recall  f1-score   support\n\n   AUTHENTIC       0.97      0.96      0.96      1498\n      FORGED       0.94      0.96      0.95      1025\n\n    accuracy                           0.96      2523\n   macro avg       0.95      0.96      0.95      2523\nweighted avg       0.96      0.96      0.96      2523\n"
+}

@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { ImageIcon, Upload, X, Eye, EyeOff, AlertCircle, CheckCircle, Loader } from 'lucide-react';
-import { analyzeImage } from '../api/client.js';
+import { analyzeImage, downloadImageEvaluationReport } from '../api/client.js';
 
 /* ── Upload Zone Component ─────────────────────────────────── */
 function DropZone({ file, onFile, accept, label }) {
@@ -236,6 +236,7 @@ export default function ImagePage() {
   const [loading, setLoading] = useState(false);
   const [result,  setResult]  = useState(null);
   const [error,   setError]   = useState(null);
+  const [reportError, setReportError] = useState(null);
 
   async function handleAnalyse() {
     if (!file) return;
@@ -249,6 +250,20 @@ export default function ImagePage() {
       setError(err.userMessage || 'Analysis failed. Is the backend running?');
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleDownloadReport() {
+    setReportError(null);
+    try {
+      const url = await downloadImageEvaluationReport('markdown');
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'image_evaluation_report.md';
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      setReportError(err.userMessage || 'Generate a training evaluation report first.');
     }
   }
 
@@ -269,7 +284,7 @@ export default function ImagePage() {
             </div>
             <div>
               <h2 style={{ margin: 0 }}>Image Forgery Detection</h2>
-              <p className="text-sm" style={{ margin: 0 }}>EfficientNet-B0 + ELA + Grad-CAM · Trained on CASIA v2.0</p>
+              <p className="text-sm" style={{ margin: 0 }}>EfficientNet-B0 + ELA + Grad-CAM · Kaggle CASIA2 · Version 4</p>
             </div>
           </div>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -277,6 +292,7 @@ export default function ImagePage() {
             <span className="badge badge-primary">ELA Pipeline</span>
             <span className="badge badge-info">Grad-CAM XAI</span>
             <span className="badge badge-primary">CASIA v2.0</span>
+            <span className="badge badge-success">Model V4</span>
           </div>
         </div>
 
@@ -305,6 +321,16 @@ export default function ImagePage() {
             <><ImageIcon size={16} /> Analyse Image</>
           )}
         </button>
+
+        <button
+          className="btn btn-secondary w-full"
+          style={{ marginTop: 12, padding: '12px 24px' }}
+          onClick={handleDownloadReport}
+        >
+          Download confusion matrix and metrics report
+        </button>
+
+        {reportError && <p className="text-sm" style={{ color: 'var(--clr-accent-rose)', marginTop: 10 }}>{reportError}</p>}
 
         {/* Error */}
         {error && (
